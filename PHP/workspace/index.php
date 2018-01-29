@@ -25,10 +25,6 @@ if($messageText == "hi") {
 
 */
 
-
-
-
-
     $answer="지금부터 시작해보자";
 
     
@@ -51,26 +47,19 @@ I can give you an information about station_issue, station_delay, movie_db.
 If you want a station_issue, please ask me 'station name'.
 If you want a station_delay, please ask me 'station name:station name'.
 If you want a movie list, please ask me 'movie~number~number'.";
-    
-    
-    
 
-  
-    
-    
-    //버스 시간 때문에 쪼개기
      static $time=0;
      static $time_s=0;
     
      static $count=0;
      static $count_re=0;
-     static $s_count=0; //시간 시작
-     static $e_count=0; //시간 끝 
+     static $s_count=0; 
+     static $e_count=0;  
   
-     static $count_m=0; //영화 카운트
-     static $ms_count=0;//영화시작 
-     static $me_count=0; //영화 끝
-     static $count_mre=0; //
+     static $count_m=0; 
+     static $ms_count=0;
+     static $me_count=0; 
+     static $count_mre=0; 
     
      static $i=0;
     
@@ -97,9 +86,7 @@ If you want a movie list, please ask me 'movie~number~number'.";
  
         $result3 = mysqli_query($connection3, $query3);
         $result_3 = mysqli_query($connection3, $query3);
- 
-      
-//시간 계산.
+
 if($end_s){
       while($row=mysqli_fetch_row($result_1)) {
          $count=$count+1;
@@ -121,7 +108,7 @@ if($end_s){
        }
       }
     $answer=$time." delay time";
-}//시간계산 끝
+}
         
 
 
@@ -162,23 +149,14 @@ if($e_order){
       //$answer=$ms_count;
   //  $answer=$stack;
     
-}//영화 순위 계산 끝
+}/
         
-
-
 //역이슈 보여주기
 if(mysqli_fetch_row($result2)){
     while ($row2 = mysqli_fetch_row($result_2)) {
   $answer=$row2[2].'  '.$row2[3].'  '.$row2[4].'  '.$row2[5].'  '.$row2[6].'  '.$row2[7].'  '.$row2[8].'  '.$row2[9].' '.$row2[10];
    }
-}//역이슈 끝
-
-//여기까지 
-
-
-
-
-
+}
 
 $response = [
     'recipient' => [ 'id' => $senderId ],
