@@ -21,21 +21,14 @@ tdm <- TermDocumentMatrix(cps,
                                        wordLengths=c(2, 5), #단어 선택 기준 2~5글자 사이
                                        weighting=weightBin)) # 횟수가 아닌 빈도수로 변경 
 
-#TDM을 매트릭스로 변경
 tdm.matrix=as.matrix(tdm)
 
 word.count <- rowSums(tdm.matrix)
 
-#횟수에 따라 내림차순으로 정렬
 word.order <- order(word.count, decreasing=T)
-
-#Term document Matrix에서 자주 쓰인 단어 상위 20개에 해당하는 것만 추림
 freq.words <- tdm.matrix[word.order[1:20], ]
 
-#행렬의 곱셈을 이용해 TERM Matrix를 co-occurence Matrix로 바꿈
 freq.words %*% t(freq.words) 
-
 co.matrix=freq.words %*% t(freq.words)
 
-#파일로 출력 
 write.csv(co.matrix,"강남역 단어.csv")
