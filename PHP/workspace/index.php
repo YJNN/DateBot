@@ -15,32 +15,23 @@ $input = json_decode(file_get_contents('php://input'), true);
 $senderId = $input['entry'][0]['messaging'][0]['sender']['id'];
 $messageText = $input['entry'][0]['messaging'][0]['message']['text'];
 
-
-
 /*
 $answer = "I don't understand. Ask me 'hi'.";
 if($messageText == "hi") {
     $answer = "Hello";
 }
-
 */
+//Connect to the database
+$host = "127.0.0.1";
+$user = "soulla";                     
+$pass = "";                                  
+$db = "date_bot";                                  
+$port = 3306;
 
-    $answer="지금부터 시작해보자";
-
-    
-    //Connect to the database
-    $host = "127.0.0.1";
-    $user = "soulla";                     //Your Cloud 9 username
-    $pass = "";                                  //Remember, there is NO password by default!
-    $db = "date_bot";                                  //Your database name you want to connect to
-    $port = 3306;                                //The port #. It is always 3306
-    
-   
-    $connection = mysqli_connect($host, $user, $pass, $db, $port)or die(mysql_error());
-    $connection1 = mysqli_connect($host, $user, $pass, $db, $port)or die(mysql_error());
-    $connection2 = mysqli_connect($host, $user, $pass, $db, $port)or die(mysql_error());
-    $connection3 = mysqli_connect($host, $user, $pass, $db, $port)or die(mysql_error());
-
+$connection = mysqli_connect($host, $user, $pass, $db, $port)or die(mysql_error());
+$connection1 = mysqli_connect($host, $user, $pass, $db, $port)or die(mysql_error());
+$connection2 = mysqli_connect($host, $user, $pass, $db, $port)or die(mysql_error());
+$connection3 = mysqli_connect($host, $user, $pass, $db, $port)or die(mysql_error());
 
 $answer="hi, I'm datebot!
 I can give you an information about station_issue, station_delay, movie_db. 
@@ -66,21 +57,19 @@ If you want a movie list, please ask me 'movie~number~number'.";
      static $stack=array();
      static $stack1=array();
      
-    list($start_s, $end_s)=explode(":", $messageText); //시간계산하기위한 시작 역 : 끝 역 (구분)
-    list($movie,$s_order, $e_order)=explode("~", $messageText); //영화 이름 순위 //로 구분
-   
-   
-     $query1 ="SELECT * FROM  station_delay"; //시간
-     $query2 ="SELECT * FROM station_issue WHERE station_N='$messageText'"; //역 이슈
-     $query3 ="SELECT * FROM  movie_db"; //영화
+    list($start_s, $end_s)=explode(":", $messageText); 
+    list($movie,$s_order, $e_order)=explode("~", $messageText); 
+
+     $query1 ="SELECT * FROM  station_delay"; 
+     $query2 ="SELECT * FROM station_issue WHERE station_N='$messageText'";
+     $query3 ="SELECT * FROM  movie_db"; 
     
     //--------------------------------------------------------------
      
         $result1 = mysqli_query($connection1, $query1);
         $result_1 = mysqli_query($connection1, $query1);
         $result_1_2 = mysqli_query($connection1, $query1);
-  
-      
+       
         $result2 = mysqli_query($connection2, $query2);
         $result_2 = mysqli_query($connection2, $query2);
  
@@ -109,10 +98,7 @@ if($end_s){
       }
     $answer=$time." delay time";
 }
-        
 
-
-//영화 순위 보여주기
 if($e_order){
       
       while($row3=mysqli_fetch_row($result3)) {
@@ -126,8 +112,7 @@ if($e_order){
               $me_count=$count_m;
           }
       }
-     
-      
+  
       while($row4=mysqli_fetch_row($result_3)) {
       
          $count_mre=$count_mre+1;
@@ -136,22 +121,16 @@ if($e_order){
             
        $an[$i]=$row4[0].' '.$row4[1].' '.$row4[2].' '. $row4[3].' '.$row4[4].' '.$row4[5].' '.$row4[6];
        array_push($stack, $an[$i]);
-        //$stack=array($row1[0], $row1[1], $row1[2], $row1[3], $row1[4], $row1[5], $row1[6]);
-         
+        //$stack=array($row1[0], $row1[1], $row1[2], $row1[3], $row1[4], $row1[5], $row1[6]);        
          $i=$i+1;
        $answer=implode(",",$stack);  
-       //  $answer=$an[0].'        \n'.$an[1].'';
-       
-           
+       //  $answer=$an[0].'        \n'.$an[1].''; 
        }
-      }
-      
+      }     
       //$answer=$ms_count;
-  //  $answer=$stack;
-    
+  //  $answer=$stack;   
 }/
-        
-//역이슈 보여주기
+
 if(mysqli_fetch_row($result2)){
     while ($row2 = mysqli_fetch_row($result_2)) {
   $answer=$row2[2].'  '.$row2[3].'  '.$row2[4].'  '.$row2[5].'  '.$row2[6].'  '.$row2[7].'  '.$row2[8].'  '.$row2[9].' '.$row2[10];
