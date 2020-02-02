@@ -25,9 +25,8 @@ for( t in title){
     result=rbind(result,NA)
   } else{
     result=rbind(result,output)
-  }
-  
-}#크롤링
+  } 
+}
 
 View(result)
 write.csv(result,"genre.csv")
